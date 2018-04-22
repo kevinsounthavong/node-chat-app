@@ -30,16 +30,38 @@ io.on('connection', (socket) => {
     createdAt: 456
   });*/
 
+  // socket.emit to user who joined FROM admin, TEXT Welcome to chat app
+  // socket.broadcast.emit to everyone but the client who joined FROM Admin, text NEW user joined
+
+  socket.emit('newMessage', {
+    from: "Admin",
+    text: "Welcome to the chat app!",
+    createdAt: new Date().getTime()
+  });
+
+  socket.broadcast.emit('newMessage', {
+    from: "Admin",
+    text: "New User Joined!"
+  });
+
   // Listen to createMessage event sent by client
   socket.on('createMessage', (message) => {
     console.log('createMessage', message);
 
-    // emits an event to all connections
+    // emits an event to ALL connections
+    
     io.emit('newMessage', {
       from: message.from,
       text: message.text,
       createdAt: new Date().getTime()
     });
+    // send the event to everyone BUT this socket
+    /*
+    socket.broadcast.emit('newMessage', {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    })*/
   });
 
   // when a client disconnects
