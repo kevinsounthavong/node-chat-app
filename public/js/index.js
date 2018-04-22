@@ -6,10 +6,11 @@ socket.on('connect', function () {
   // Client connects to server, creates an "createEmail"
   // and emits this email event
   // createMessage event to go to server
+  /*
   socket.emit('createMessage', {
     from: 'Poopy McGee',
     text: "Message from the client"
-  })
+  })*/
 });
 
 socket.on('disconnect', function () {

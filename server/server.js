@@ -23,15 +23,23 @@ io.on('connection', (socket) => {
   // Creates an event and propagates it
   // to client that connected
   // newMessage Event
+  /*
   socket.emit('newMessage', {
     from: 'John Cena',
     text: 'YOU CANNOT SEE ME',
     createdAt: 456
-  });
+  });*/
 
   // Listen to createMessage event sent by client
   socket.on('createMessage', (message) => {
     console.log('createMessage', message);
+
+    // emits an event to all connections
+    io.emit('newMessage', {
+      from: message.from,
+      text: message.text,
+      createdAt: new Date().getTime()
+    });
   });
 
   // when a client disconnects
