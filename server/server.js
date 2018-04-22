@@ -20,6 +20,20 @@ app.use(express.static(publicPath)); // serve static files in public folder
 io.on('connection', (socket) => {
   console.log('New User connected');
 
+  // Creates an event and propagates it
+  // to client that connected
+  // newMessage Event
+  socket.emit('newMessage', {
+    from: 'John Cena',
+    text: 'YOU CANNOT SEE ME',
+    createdAt: 456
+  });
+
+  // Listen to createMessage event sent by client
+  socket.on('createMessage', (message) => {
+    console.log('createMessage', message);
+  });
+
   // when a client disconnects
   socket.on('disconnect', ()=>{
     console.log("User was disconnected");
