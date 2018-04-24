@@ -39,12 +39,13 @@ io.on('connection', (socket) => {
   socket.broadcast.emit('newMessage', generateMessage('Admin', ' New User Joined'));
 
   // Listen to createMessage event sent by client
-  socket.on('createMessage', (message) => {
+  socket.on('createMessage', (message, callback) => {
     console.log('createMessage', message);
 
     // emits an event to ALL connections
     
     io.emit('newMessage', generateMessage(message.from, message.text));
+    callback("This is from the server"); // send an event back to the frontend
     // send the event to everyone BUT this socket
     /*
     socket.broadcast.emit('newMessage', {
