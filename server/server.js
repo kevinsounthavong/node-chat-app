@@ -45,7 +45,7 @@ io.on('connection', (socket) => {
     // emits an event to ALL connections
     
     io.emit('newMessage', generateMessage(message.from, message.text));
-    callback("This is from the server"); // send an event back to the frontend
+    callback(); // send an event back to the frontend
     // send the event to everyone BUT this socket
     /*
     socket.broadcast.emit('newMessage', {
