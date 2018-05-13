@@ -1,7 +1,7 @@
 var socket = io(); // makes a req from client to server to open a socket and keep it open
 
 // implementing autoscrolling
-function scrollToBottom() {
+function scrollToBottom () {
   // Selectors
   var messages = jQuery('#messages');
   var newMessage = messages.children('li:last-child');
@@ -21,7 +21,20 @@ function scrollToBottom() {
 
 socket.on('connect', function () {
   console.log('Connected to server');
+  var params = jQuery.deparam(window.location.search);
 
+  socket.emit('join', params, function (err) {
+    if(err)
+    {
+      alert(err);
+      // redirect to root page
+      window.location.href = '/';
+    }
+    else
+    {
+      console.log('No error');
+    }
+  });
   // Client connects to server, creates an "createEmail"
   // and emits this email event
   // createMessage event to go to server
@@ -36,6 +49,16 @@ socket.on('disconnect', function () {
   console.log('Disconnected from server');
 });
 
+socket.on('updateUserList', function (users) {
+  console.log('Users List', users);
+  var ol = jQuery('<ol></ol>');
+
+  users.forEach(function (user) {
+    ol.append(jQuery('<li></li>').text(user));
+  });
+
+  jQuery('#users').html(ol);
+});
 // CUstom events
 
 socket.on('newMessage', function (message) {
